@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import { assets, blog_data, comments_data } from '../assets/assets'
 import Navbar from '../components/Navbar';
 import Moment from 'moment';
+import Footer from '../components/Footer';
+import Loader from '../components/Loader';
 
 
 const Blog = () => {
@@ -12,6 +14,10 @@ const Blog = () => {
   const [data, setData] = useState(null)
   const [comments, setComments] = useState([])
 
+  // for controlling the comment form content
+  const [name, setName] = useState('')
+  const [content, setContent] = useState('')
+
 
   const fetchBlogData = async () => {
     const data = blog_data.find((item) => item._id === id);
@@ -20,6 +26,10 @@ const Blog = () => {
 
   const fetchComment = async () => {
     setComments(comments_data)
+  }
+
+  const addComment = async (e) => {
+    e.preventDefault();
   }
 
   useEffect(() => {
@@ -70,9 +80,50 @@ const Blog = () => {
           </div>
         </div>
         {/* Add comment section*/}
+        <div className='max-w-3xl mx-auto'>
+          <p className='font-semibold mb-4'>Add your comment</p>
+          <form onSubmit={addComment} className='flex flex-col items-start gap-4 max-w-lg'>
+
+            <input onChange={(e) => setName(e.target.value)} value={name}
+              type="text"
+              placeholder='Name'
+              required
+              className='w-full p-2 border border-gray-300 rounded outline-none'
+            />
+
+            <textarea onChange={(e) => setContent(e.target.value)} value={content}
+              type="text"
+              placeholder='Comment'
+              className='w-full p-2 border border-gray-300 rounded outline-none h-48'
+              required
+            ></textarea>
+
+            <button
+              type="submit"
+              className='bg-primary text-white rounded p-2 px-8 hover:scale-102 transition-all cursor-pointer'
+            >
+              Submit
+            </button>
+
+          </form>
+        </div>
+
+        {/* Share Buttons */}
+        <div className='my-24 max-w-3xl mx-auto'>
+          <p className='font-semibold my-4'>Share this article on social media</p>
+          <div className='flex cursor-pointer'>
+            <img src={assets.facebook_icon} width={50} alt="" />
+            <img src={assets.twitter_icon} width={50} alt="" />
+            <img src={assets.googleplus_icon} width={50} alt="" />
+          </div>
+        </div>
+        <Footer/>
       </div>
+
+
+
     </div>
-  ) : <div>Loading...</div>
+  ) : <Loader />
 
 }
 
