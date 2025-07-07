@@ -1,5 +1,6 @@
 import fs from 'fs';
 import imagekit from '../configs/imageKit.js';
+import Blog from '../models/Blog.js';
 
 export const addBlog = async (req, res) => {
     try {
@@ -21,9 +22,24 @@ export const addBlog = async (req, res) => {
         });
 
         // Optimization through imagekit
+        const optimizedImageUrl = imagekit.url({
+            path: response.filePath,
+            transformation: [
+                { quality: 'auto' },  // Auto compression
+                { format: 'webp' },   // Convert to modern format
+                { width: '1280' }     // Width resizing
+            ]
+        });
+        const image = optimizedImageUrl;
+
+        // Storing in th mongoDB database
+        await Blog.create({title,subTitle, description, category, image, isPublished});
+
+        res.json({ success: true, message: "Blog added successfully" });
 
     } catch (error) {
-
+        console.error("Error adding blog:", error);
+        res.json({ success: false, message: error.message });
     }
 
 }

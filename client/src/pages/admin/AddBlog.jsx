@@ -11,7 +11,7 @@ const AddBlog = () => {
   const [image, setImage] = useState(false);
   const [title, setTitle] = useState('');
   const [subTitle, setSubTitle] = useState('');
-  const [isPublished, setIspublished] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
   const [category, setCategory] = useState('Startup');
 
   const onSubmitHandler = async (e) => {
@@ -82,7 +82,7 @@ const AddBlog = () => {
           name="category"
           className='mt-2 px-3 py-2 border text-gray-500 border-gray-300 outline-none rounded'
         >
-          <option value="">Select category</option>
+          <option value={category}>Select category</option>
           {blogCategories.map((item, index) => {
             return <option key={index} value={item}>{item}</option>
           })}
